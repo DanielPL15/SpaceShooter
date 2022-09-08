@@ -6,26 +6,27 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.SystemClock.uptimeMillis
+import android.support.v4.os.IResultReceiver
 import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import com.danielpl.spaceshootersample.preferences.DefaultPreferences
+import com.danielpl.spaceshootersample.preferences.Preferences
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlin.random.Random
 
 
-const val STAGE_WIDTH = 1080
-const val STAGE_HEIGHT = 720
-const val STAR_COUNT = 40
-const val ENEMY_COUNT = 10
+
 val RNG = Random(uptimeMillis())
-
 @Volatile var isBoosting = false
-var playerSpeed = 0f
-
 private const val TAG = "Game"
 const val PREFS = "com.danielpl.spaceshootersample"
-const val LONGEST_DIST = "longest_distance"
-class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Callback {
+var playerSpeed = 0f
+
+@AndroidEntryPoint
+class Game(context: Context, private val preferences: Preferences) : SurfaceView(context), Runnable, SurfaceHolder.Callback {
     private val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
     private val editor = prefs.edit()
     private lateinit var gameThread: Thread
@@ -40,13 +41,12 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     private var maxDistanceTraveled = 0
 
     init {
-
         holder.addCallback(this)
-        holder.setFixedSize(STAGE_WIDTH, STAGE_HEIGHT)
-        for (i in 0 until STAR_COUNT){
+        holder.setFixedSize(R.integer.STAGE_WIDTH, R.integer.STAGE_HEIGHT)
+        for (i in 0 until R.integer.STAR_COUNT){
             entities.add(Star())
         }
-        for (i in 0 until ENEMY_COUNT){
+        for (i in 0 until R.integer.ENEMY_COUNT){
             entities.add(Enemy(resources))
         }
     }
@@ -57,7 +57,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         }
         player.respawn()
         distanceTraveled = 0
-        maxDistanceTraveled = prefs.getInt(LONGEST_DIST,0)
+        maxDistanceTraveled = preferences.getLongestDistance()
         isGameOver = false
         //play sound effect
         //reset the score, maybe update the highScore table
@@ -88,14 +88,13 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         if(player.health<1){
             isGameOver = true
             if(distanceTraveled>maxDistanceTraveled){
-                editor.putInt(LONGEST_DIST, distanceTraveled)
-                editor.apply()
+                preferences.saveLongestDistance(maxDistanceTraveled)
             }
         }
     }
 
     private fun checkCollisions() {
-        for(i in STAR_COUNT until entities.size){
+        for(i in R.integer.STAR_COUNT until entities.size){
             val enemy = entities[i]
             if(isColliding(enemy,player)){
                 enemy.onCollision(player)
@@ -130,8 +129,8 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
             canvas.drawText("Distance: $distanceTraveled", margin,textSize*2,paint)
         }else{
             paint.textAlign = Paint.Align.CENTER
-            val centerX = STAGE_WIDTH*0.5f
-            val centerY = STAGE_HEIGHT*0.5f
+            val centerX = R.integer.STAGE_WIDTH*0.5f
+            val centerY = R.integer.STAGE_HEIGHT*0.5f
             canvas.drawText("GAME OVER!", centerX,centerY,paint)
             canvas.drawText("press to restart", centerX,centerY+textSize,paint)
         }

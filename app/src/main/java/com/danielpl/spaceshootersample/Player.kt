@@ -44,8 +44,8 @@ class Player(res: Resources): BitmapEntity() {
         y += velY
         playerSpeed = velX
 
-        if(bottom()> STAGE_HEIGHT){
-            setBottom(STAGE_HEIGHT.toFloat())
+        if(bottom()> R.integer.STAGE_HEIGHT){
+            setBottom(R.integer.STAGE_HEIGHT.toFloat())
         } else if(top()<0f){
             setTop(0f)
         }
