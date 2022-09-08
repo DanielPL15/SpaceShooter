@@ -6,9 +6,17 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import com.danielpl.spaceshootersample.preferences.Preferences
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 private const val TAG = "MainActivity"
+
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject lateinit var preferences: Preferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -20,9 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val prefs = getSharedPreferences(PREFS, MODE_PRIVATE)
-        val longestDistance = prefs.getInt(LONGEST_DIST,0)
-
+        val longestDistance = preferences.getLongestDistance()
         val highScore = findViewById<TextView>(R.id.highscore)
         highScore.text = "Longest distance: $longestDistance km"
     }

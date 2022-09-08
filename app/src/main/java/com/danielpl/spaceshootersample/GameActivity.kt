@@ -3,7 +3,9 @@ package com.danielpl.spaceshootersample
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class GameActivity: AppCompatActivity() {
     private val TAG = "GameActivity"
     private lateinit var game: Game

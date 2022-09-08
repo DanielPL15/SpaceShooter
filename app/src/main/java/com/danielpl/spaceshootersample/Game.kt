@@ -10,6 +10,9 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import com.danielpl.spaceshootersample.preferences.Preferences
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlin.random.Random
 
 
@@ -23,11 +26,11 @@ val RNG = Random(uptimeMillis())
 var playerSpeed = 0f
 
 private const val TAG = "Game"
-const val PREFS = "com.danielpl.spaceshootersample"
-const val LONGEST_DIST = "longest_distance"
+
+@AndroidEntryPoint
 class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Callback {
-    private val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-    private val editor = prefs.edit()
+
+    @Inject lateinit var preferences: Preferences
     private lateinit var gameThread: Thread
     @Volatile
     private var isRunning = false
@@ -57,7 +60,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         }
         player.respawn()
         distanceTraveled = 0
-        maxDistanceTraveled = prefs.getInt(LONGEST_DIST,0)
+        maxDistanceTraveled = preferences.getLongestDistance()
         isGameOver = false
         //play sound effect
         //reset the score, maybe update the highScore table
@@ -88,8 +91,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         if(player.health<1){
             isGameOver = true
             if(distanceTraveled>maxDistanceTraveled){
-                editor.putInt(LONGEST_DIST, distanceTraveled)
-                editor.apply()
+                preferences.saveLongestDistance(maxDistanceTraveled)
             }
         }
     }
