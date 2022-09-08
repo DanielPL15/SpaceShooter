@@ -1,9 +1,12 @@
-package com.danielpl.spaceshootersample
+package com.danielpl.spaceshootersample.entity
 
 import android.content.res.Resources
+import com.danielpl.spaceshootersample.R
+import com.danielpl.spaceshootersample.RNG
+import com.danielpl.spaceshootersample.playerSpeed
 
 const val ENEMY_HEIGHT = 60
-const val ENEMY_SPAWN_OFFSET = STAGE_WIDTH*2
+const val ENEMY_SPAWN_OFFSET = R.integer.STAGE_WIDTH *2
 class Enemy(res: Resources): BitmapEntity() {
 
     init {
@@ -22,8 +25,8 @@ class Enemy(res: Resources): BitmapEntity() {
     }
 
     override fun respawn(){
-        x = (STAGE_WIDTH + RNG.nextInt(ENEMY_SPAWN_OFFSET)).toFloat()
-        y = RNG.nextInt(STAGE_HEIGHT- ENEMY_HEIGHT).toFloat()
+        x = (R.integer.STAGE_WIDTH + RNG.nextInt(ENEMY_SPAWN_OFFSET)).toFloat()
+        y = RNG.nextInt(R.integer.STAGE_HEIGHT - ENEMY_HEIGHT).toFloat()
     }
     override fun update() {
         velX = -playerSpeed

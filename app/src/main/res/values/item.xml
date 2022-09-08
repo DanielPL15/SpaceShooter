@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="ACCELERATION" format="float" type="dimen">1.1</item>
+    <item name="MIN_VEL" format="float" type="dimen">0.1</item>
+    <item name="MAX_VEL" format="float" type="dimen">20</item>
+    <item name="GRAVITY" format="float" type="dimen">1.1</item>
+    <item name="LIFT" format="float" type="dimen">-2.2</item>
+    <item name="DRAG" format="float" type="dimen">0.97</item>
+    <item name="PLAYER_STARTING_POSITION" format="float" type="dimen">10.0</item>
+</resources>

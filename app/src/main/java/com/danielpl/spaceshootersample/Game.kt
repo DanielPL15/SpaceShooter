@@ -10,16 +10,14 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import com.danielpl.spaceshootersample.entity.*
 import com.danielpl.spaceshootersample.preferences.Preferences
+import com.danielpl.spaceshootersample.util.Config
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.random.Random
 
 
-const val STAGE_WIDTH = 1080
-const val STAGE_HEIGHT = 720
-const val STAR_COUNT = 40
-const val ENEMY_COUNT = 10
 val RNG = Random(uptimeMillis())
 
 @Volatile var isBoosting = false
@@ -31,6 +29,7 @@ private const val TAG = "Game"
 class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Callback {
 
     @Inject lateinit var preferences: Preferences
+    @Inject lateinit var config: Config
     private lateinit var gameThread: Thread
     @Volatile
     private var isRunning = false
@@ -45,11 +44,11 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     init {
 
         holder.addCallback(this)
-        holder.setFixedSize(STAGE_WIDTH, STAGE_HEIGHT)
-        for (i in 0 until STAR_COUNT){
+        holder.setFixedSize(config.STAGE_WIDTH, config.STAGE_HEIGHT)
+        for (i in 0 until config.STAR_COUNT){
             entities.add(Star())
         }
-        for (i in 0 until ENEMY_COUNT){
+        for (i in 0 until config.ENEMY_COUNT){
             entities.add(Enemy(resources))
         }
     }
@@ -97,7 +96,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     }
 
     private fun checkCollisions() {
-        for(i in STAR_COUNT until entities.size){
+        for(i in config.STAR_COUNT until entities.size){
             val enemy = entities[i]
             if(isColliding(enemy,player)){
                 enemy.onCollision(player)
@@ -132,8 +131,8 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
             canvas.drawText("Distance: $distanceTraveled", margin,textSize*2,paint)
         }else{
             paint.textAlign = Paint.Align.CENTER
-            val centerX = STAGE_WIDTH*0.5f
-            val centerY = STAGE_HEIGHT*0.5f
+            val centerX = config.STAGE_WIDTH*0.5f
+            val centerY = config.STAGE_HEIGHT*0.5f
             canvas.drawText("GAME OVER!", centerX,centerY,paint)
             canvas.drawText("press to restart", centerX,centerY+textSize,paint)
         }

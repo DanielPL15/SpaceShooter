@@ -1,4 +1,4 @@
-package com.danielpl.spaceshootersample
+package com.danielpl.spaceshootersample.entity
 
 import android.graphics.Canvas
 import android.graphics.Paint
