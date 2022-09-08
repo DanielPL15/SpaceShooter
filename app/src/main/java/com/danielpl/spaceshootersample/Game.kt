@@ -91,7 +91,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         if(player.health<1){
             isGameOver = true
             if(distanceTraveled>maxDistanceTraveled){
-                preferences.saveLongestDistance(maxDistanceTraveled)
+                preferences.saveLongestDistance(distanceTraveled)
             }
         }
     }

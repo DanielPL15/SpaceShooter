@@ -3,14 +3,11 @@ package com.danielpl.spaceshootersample
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import com.danielpl.spaceshootersample.preferences.Preferences
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
-private const val TAG = "MainActivity"
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -30,6 +27,6 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         val longestDistance = preferences.getLongestDistance()
         val highScore = findViewById<TextView>(R.id.highscore)
-        highScore.text = "Longest distance: $longestDistance km"
+        highScore.text = getString(R.string.highScore, longestDistance.toString())
     }
 }
