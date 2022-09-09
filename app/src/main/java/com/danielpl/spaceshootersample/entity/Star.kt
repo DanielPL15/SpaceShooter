@@ -3,22 +3,20 @@ package com.danielpl.spaceshootersample.entity
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.danielpl.spaceshootersample.R
-import com.danielpl.spaceshootersample.RNG
-import com.danielpl.spaceshootersample.playerSpeed
+import com.danielpl.spaceshootersample.util.Config
+import com.danielpl.spaceshootersample.util.Config.playerSpeed
 
 class Star: Entity() {
-    private val TAG = "Star"
     private val color = Color.YELLOW
-    private val radius: Float = (RNG.nextInt(6)+2).toFloat()
+    private val radius: Float = (Config.RNG.nextInt(6)+2).toFloat()
 
     init {
         respawn()
     }
 
     override fun respawn() {
-        x = RNG.nextInt(R.integer.STAGE_WIDTH).toFloat()
-        y = RNG.nextInt(R.integer.STAGE_HEIGHT).toFloat()
+        x = Config.RNG.nextInt(Config.STAGE_WIDTH).toFloat()
+        y = Config.RNG.nextInt(Config.STAGE_HEIGHT).toFloat()
         width = radius * 2f
         height = width
     }
@@ -27,10 +25,10 @@ class Star: Entity() {
         super.update()
         x+= -playerSpeed
         if(right()<0){
-            setLeft(R.integer.STAGE_WIDTH.toFloat())
-            setTop(RNG.nextInt(R.integer.STAGE_HEIGHT -height.toInt()).toFloat())
+            setLeft(Config.STAGE_WIDTH.toFloat())
+            setTop(Config.RNG.nextInt(Config.STAGE_HEIGHT -height.toInt()).toFloat())
         }
-        if(top() > R.integer.STAGE_HEIGHT) setBottom(0f)
+        if(top() > Config.STAGE_HEIGHT) setBottom(0f)
     }
 
     override fun render(canvas: Canvas, paint: Paint) {

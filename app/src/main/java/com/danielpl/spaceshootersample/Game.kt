@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.os.SystemClock.uptimeMillis
 import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
@@ -13,23 +12,18 @@ import android.view.SurfaceView
 import com.danielpl.spaceshootersample.entity.*
 import com.danielpl.spaceshootersample.preferences.Preferences
 import com.danielpl.spaceshootersample.util.Config
+import com.danielpl.spaceshootersample.util.Config.isBoosting
+import com.danielpl.spaceshootersample.util.Config.playerSpeed
+import com.danielpl.spaceshootersample.util.Jukebox
+import com.danielpl.spaceshootersample.util.SFX
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlin.random.Random
 
-
-val RNG = Random(uptimeMillis())
-
-@Volatile var isBoosting = false
-var playerSpeed = 0f
-
-private const val TAG = "Game"
 
 @AndroidEntryPoint
 class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Callback {
 
     @Inject lateinit var preferences: Preferences
-    @Inject lateinit var config: Config
     private lateinit var gameThread: Thread
     @Volatile
     private var isRunning = false
@@ -44,11 +38,11 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     init {
 
         holder.addCallback(this)
-        holder.setFixedSize(config.STAGE_WIDTH, config.STAGE_HEIGHT)
-        for (i in 0 until config.STAR_COUNT){
+        holder.setFixedSize(Config.STAGE_WIDTH, Config.STAGE_HEIGHT)
+        for (i in 0 until Config.STAR_COUNT){
             entities.add(Star())
         }
-        for (i in 0 until config.ENEMY_COUNT){
+        for (i in 0 until Config.ENEMY_COUNT){
             entities.add(Enemy(resources))
         }
     }
@@ -76,7 +70,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     }
 
     private fun update() {
-        Log.d(TAG, "update")
+        Log.d(R.string.game_tag.toString(), "update")
         player.update()
         for(entity in entities){
             entity.update()
@@ -96,7 +90,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     }
 
     private fun checkCollisions() {
-        for(i in config.STAR_COUNT until entities.size){
+        for(i in Config.STAR_COUNT until entities.size){
             val enemy = entities[i]
             if(isColliding(enemy,player)){
                 enemy.onCollision(player)
@@ -108,7 +102,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
 
 
     private fun render() {
-        Log.d(TAG, "render")
+        Log.d(R.string.game_tag.toString(), "render")
         val canvas = acquireAndLockCanvas() ?: return
         canvas.drawColor(Color.BLUE)
         for(entity in entities){
@@ -127,14 +121,14 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         paint.textSize = textSize
 
         if(!isGameOver){
-            canvas.drawText("Health: ${player.health}", margin,textSize,paint)
-            canvas.drawText("Distance: $distanceTraveled", margin,textSize*2,paint)
+            canvas.drawText(context.getString(R.string.health_counter, player.health.toString()), margin,textSize,paint)
+            canvas.drawText(context.getString(R.string.distance_counter, distanceTraveled.toString()), margin,textSize*2,paint)
         }else{
             paint.textAlign = Paint.Align.CENTER
-            val centerX = config.STAGE_WIDTH*0.5f
-            val centerY = config.STAGE_HEIGHT*0.5f
-            canvas.drawText("GAME OVER!", centerX,centerY,paint)
-            canvas.drawText("press to restart", centerX,centerY+textSize,paint)
+            val centerX = Config.STAGE_WIDTH*0.5f
+            val centerY = Config.STAGE_HEIGHT*0.5f
+            canvas.drawText(context.getString(R.string.game_over), centerX,centerY,paint)
+            canvas.drawText(context.getString(R.string.restart), centerX,centerY+textSize,paint)
         }
     }
 
@@ -146,44 +140,44 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     }
 
     fun pause() {
-        Log.d(TAG, "pause")
+        Log.d(R.string.game_tag.toString(), "pause")
         isRunning = false
         try {
             gameThread.join()
         }
         catch (e: Exception){
-            Log.d(TAG, "Error while pausing: $e")
+            Log.d(R.string.game_tag.toString(), "Error while pausing: $e")
         }
     }
 
     fun resume() {
-        Log.d(TAG, "resume")
+        Log.d(R.string.game_tag.toString(), "resume")
         gameThread = Thread(this)
         isRunning = true
     }
 
     override fun surfaceCreated(p0: SurfaceHolder) {
-        Log.d(TAG, "surfaceCreated")
+        Log.d(R.string.game_tag.toString(), "surfaceCreated")
         gameThread.start()
     }
 
     override fun surfaceChanged(p0: SurfaceHolder, format: Int, width: Int, height: Int) {
-        Log.d(TAG, "surfaceChanged, width: $width, height: $height")
+        Log.d(R.string.game_tag.toString(), "surfaceChanged, width: $width, height: $height")
     }
 
     override fun surfaceDestroyed(p0: SurfaceHolder) {
-        Log.d(TAG, "surfaceDestroyed")
+        Log.d(R.string.game_tag.toString(), "surfaceDestroyed")
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_UP -> {
-                Log.d(TAG, "slowing down")
+                Log.d(R.string.game_tag.toString(), "slowing down")
                 isBoosting = false
             }
             MotionEvent.ACTION_DOWN -> {
-                Log.d(TAG, "isBoosting")
+                Log.d(R.string.game_tag.toString(), "isBoosting")
                 if(isGameOver){
                     restart()
                 } else {

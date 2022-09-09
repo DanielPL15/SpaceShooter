@@ -4,45 +4,43 @@ import android.content.res.Resources
 import android.util.Log
 import androidx.core.math.MathUtils.clamp
 import com.danielpl.spaceshootersample.R
-import com.danielpl.spaceshootersample.isBoosting
-import com.danielpl.spaceshootersample.playerSpeed
 import com.danielpl.spaceshootersample.util.Config
-import javax.inject.Inject
+import com.danielpl.spaceshootersample.util.Config.isBoosting
+import com.danielpl.spaceshootersample.util.Config.playerSpeed
 
 class Player(res: Resources): BitmapEntity() {
-    @Inject lateinit var config: Config
-    private val TAG = "Player"
-    var health = config.PLAYER_STARTING_HEALTH
+    var health = 0
     init {
-        setSprite(loadBitmap(res, R.drawable.player_ship, config.PLAYER_HEIGHT))
+        setSprite(loadBitmap(res, R.drawable.player_ship, Config.PLAYER_HEIGHT))
+        health = Config.PLAYER_STARTING_HEALTH
     }
 
     override fun respawn() {
-        health = config.PLAYER_STARTING_HEALTH
-        x= (config.PLAYER_STARTING_POSITION.toFloat()).toFloat()
+        health = Config.PLAYER_STARTING_HEALTH
+        x= (Config.PLAYER_STARTING_POSITION)
     }
 
     override fun onCollision(that: Entity) {
-        Log.d(TAG, "OnCollision")
+        Log.d(R.string.player_tag.toString(), "OnCollision")
         health--
     }
 
     override fun update() {
-        velX*= config.DRAG.toFloat()
-        velY += config.GRAVITY.toFloat()
+        velX*= Config.DRAG
+        velY += Config.GRAVITY
         if(isBoosting){
-            velX *= config.ACCELERATION.toFloat()
-            velY += config.LIFT.toFloat()
+            velX *= Config.ACCELERATION
+            velY += Config.LIFT
         }
 
-        velX = clamp(velX, config.MIN_VEL.toFloat(), config.MAX_VEL.toFloat())
-        velY = clamp(velY, -config.MAX_VEL.toFloat(), config.MAX_VEL.toFloat())
+        velX = clamp(velX, Config.MIN_VEL, Config.MAX_VEL)
+        velY = clamp(velY, -Config.MAX_VEL, Config.MAX_VEL)
 
         y += velY
         playerSpeed = velX
 
-        if(bottom()> config.STAGE_HEIGHT){
-            setBottom(config.STAGE_HEIGHT.toFloat())
+        if(bottom()> Config.STAGE_HEIGHT){
+            setBottom(Config.STAGE_HEIGHT.toFloat())
         } else if(top()<0f){
             setTop(0f)
         }

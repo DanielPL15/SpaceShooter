@@ -7,13 +7,14 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class GameActivity: AppCompatActivity() {
-    private val TAG = "GameActivity"
+
     private lateinit var game: Game
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         game = Game(this)
         setContentView(game)
-        Log.d(TAG, "onCreate called")
+        Log.d(R.string.game_activity_tag.toString(), "onCreate called")
     }
 
     override fun onPause() {

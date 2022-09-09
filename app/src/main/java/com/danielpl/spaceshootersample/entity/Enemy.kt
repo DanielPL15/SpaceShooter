@@ -2,31 +2,30 @@ package com.danielpl.spaceshootersample.entity
 
 import android.content.res.Resources
 import com.danielpl.spaceshootersample.R
-import com.danielpl.spaceshootersample.RNG
-import com.danielpl.spaceshootersample.playerSpeed
+import com.danielpl.spaceshootersample.util.Config
+import com.danielpl.spaceshootersample.util.Config.playerSpeed
 
-const val ENEMY_HEIGHT = 60
-const val ENEMY_SPAWN_OFFSET = R.integer.STAGE_WIDTH *2
+
 class Enemy(res: Resources): BitmapEntity() {
 
     init {
         respawn()
 
         var id = R.drawable.tm_1
-        when(RNG.nextInt(1,6)){
+        when(Config.RNG.nextInt(1,6)){
             1-> id = R.drawable.tm_1
             2-> id = R.drawable.tm_2
             3-> id = R.drawable.tm_3
             4-> id = R.drawable.tm_4
             5-> id = R.drawable.tm_5
         }
-        val bmp = loadBitmap(res, id, ENEMY_HEIGHT)
+        val bmp = loadBitmap(res, id, Config.ENEMY_HEIGHT)
         setSprite(flipVertically(bmp))
     }
 
     override fun respawn(){
-        x = (R.integer.STAGE_WIDTH + RNG.nextInt(ENEMY_SPAWN_OFFSET)).toFloat()
-        y = RNG.nextInt(R.integer.STAGE_HEIGHT - ENEMY_HEIGHT).toFloat()
+        x = (Config.STAGE_WIDTH + Config.RNG.nextInt(Config.ENEMY_SPAWN_OFFSET)).toFloat()
+        y = Config.RNG.nextInt(Config.STAGE_HEIGHT - Config.ENEMY_HEIGHT).toFloat()
     }
     override fun update() {
         velX = -playerSpeed

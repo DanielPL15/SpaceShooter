@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.danielpl.spaceshootersample.preferences.DefaultPreferences
 import com.danielpl.spaceshootersample.preferences.Preferences
-import com.danielpl.spaceshootersample.util.Config
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,12 +28,6 @@ object AppModule {
     @Singleton
     fun providePreferences(sharedPreferences: SharedPreferences): Preferences {
         return DefaultPreferences(sharedPreferences)
-    }
-
-    @Provides
-    @Singleton
-    fun provideConfig(): Config{
-        return Config()
     }
 
 

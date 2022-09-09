@@ -2,4 +2,15 @@
     <string name="app_name">SpaceShooterSample</string>
     <string name="start_game">Start Game!</string>
     <string name="highScore">Longest distance: %s km</string>
+    <string name="health_counter">Health %s</string>
+    <string name="distance_counter">Distance: %s</string>
+    <string name="game_over">Game Over!</string>
+    <string name="restart">press to restart</string>
+
+    <string name="game_tag">game</string>
+    <string name="player_tag">player</string>
+    <string name="game_activity_tag">gameActivity</string>
+    <string name="jukebox_tag">jukebox</string>
+    <string name="star_tag">star</string>
+    <string name="entity_tag">entity</string>
 </resources>

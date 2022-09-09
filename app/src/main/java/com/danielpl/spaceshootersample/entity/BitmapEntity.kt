@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.*
 
 open class BitmapEntity: Entity() {
-    lateinit var bitmap: Bitmap
+    private lateinit var bitmap: Bitmap
 
     fun setSprite(bmp: Bitmap){
         bitmap = bmp

@@ -1,10 +1,11 @@
-package com.danielpl.spaceshootersample
+package com.danielpl.spaceshootersample.util
 
 import android.content.res.AssetFileDescriptor
 import android.content.res.AssetManager
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.util.Log
+import com.danielpl.spaceshootersample.R
 import java.io.IOException
 
 object SFX{
@@ -12,7 +13,6 @@ object SFX{
 }
 const val MAX_STREAMS = 3
 class Jukebox(assetManager: AssetManager) {
-    private val TAG = "Jukebox"
     private val assetManager = assetManager
     private val soundPool: SoundPool
     init {
@@ -24,7 +24,7 @@ class Jukebox(assetManager: AssetManager) {
             .setAudioAttributes(attr)
             .setMaxStreams(MAX_STREAMS)
             .build()
-        Log.d(TAG, "soundpool created!")
+        Log.d(R.string.jukebox_tag.toString(), "soundPool created!")
         SFX.crash = loadSound("crash.wav")
     }
 
@@ -33,7 +33,7 @@ class Jukebox(assetManager: AssetManager) {
             val descriptor: AssetFileDescriptor = assetManager.openFd(fileName)
             return soundPool.load(descriptor, 1)
         }catch(e: IOException){
-            Log.d(TAG, "Unable to load $fileName! Check the filename, and make sure it's in the assets-folder.")
+            Log.d(R.string.jukebox_tag.toString(), "Unable to load $fileName! Check the filename, and make sure it's in the assets-folder.")
         }
         return 0
     }
@@ -51,6 +51,6 @@ class Jukebox(assetManager: AssetManager) {
 
     fun destroy() {
         soundPool.release()
-        //the soundpool can no longer be used! you have to create a new soundpool.
+        //the soundPool can no longer be used! you have to create a new soundPool.
     }
 }

@@ -3,9 +3,9 @@ package com.danielpl.spaceshootersample.entity
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.Log
+import com.danielpl.spaceshootersample.R
 
-abstract class Entity() {
-    private val TAG = "Entity"
+abstract class Entity {
     var x = 0f
     var y = 0f
     var width = 0f
@@ -14,7 +14,7 @@ abstract class Entity() {
     var velY = 0f
 
     init{
-        Log.d(TAG, "Entity created")
+        Log.d(R.string.entity_tag.toString(), "Entity created")
     }
 
     open fun update() {}
