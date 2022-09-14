@@ -16,7 +16,7 @@ class Star: Entity() {
     private lateinit var shape: String
     private val rx: Float = (Config.RNG.nextInt(10)+2).toFloat()
     private val ry: Float = (Config.RNG.nextInt(10)+2).toFloat()
-    private val ovalRandomizer = (Config.RNG.nextFloat())
+    private val ovalRandomizer = (Config.RNG.nextFloat()+0.1f)
 
     init {
         respawn()
