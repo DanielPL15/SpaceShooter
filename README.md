@@ -1,10 +1,8 @@
 # Space Shooter
 #### Author: Daniel Peña López
-#### Improvements made:
-1.
-2.
-3.
-4.
-5.
-6.
-7.
+
+## **Completed pass achievements**
+1. Refactor all literals
+2. Refactor all user-facing Strings into resources
+
+## **Complemented pass with distinction achievements**
