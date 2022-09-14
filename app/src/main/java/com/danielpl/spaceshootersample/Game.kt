@@ -55,6 +55,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         distanceTraveled = 0
         maxDistanceTraveled = preferences.getLongestDistance()
         isGameOver = false
+        jukebox.play(SFX.starting)
         //play sound effect
         //reset the score, maybe update the highScore table
 
@@ -82,6 +83,9 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
 
     private fun checkGameOver() {
         if(player.health<1){
+            if(!isGameOver){
+                jukebox.play(SFX.death)
+            }
             isGameOver = true
             if(distanceTraveled>maxDistanceTraveled){
                 preferences.saveLongestDistance(distanceTraveled)
@@ -155,6 +159,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         Log.d(R.string.game_tag.toString(), "resume")
         gameThread = Thread(this)
         isRunning = true
+        jukebox.play(SFX.starting)
     }
 
     override fun surfaceCreated(p0: SurfaceHolder) {
@@ -182,6 +187,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
                 if(isGameOver){
                     restart()
                 } else {
+                    jukebox.play(SFX.boost)
                     isBoosting = true
                 }
             }

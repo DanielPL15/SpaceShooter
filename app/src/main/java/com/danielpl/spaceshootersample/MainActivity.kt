@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import com.danielpl.spaceshootersample.preferences.Preferences
+import com.danielpl.spaceshootersample.util.Jukebox
+import com.danielpl.spaceshootersample.util.SFX
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
