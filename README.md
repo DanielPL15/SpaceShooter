@@ -5,5 +5,6 @@
 1. Refactor all literals
 2. Refactor all user-facing Strings into resources
 3. Improve the Star entity class
+4. Add sound effects to all important interactions
 
 ## **Complemented pass with distinction achievements**
