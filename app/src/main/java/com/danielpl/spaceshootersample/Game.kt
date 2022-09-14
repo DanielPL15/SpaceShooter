@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
@@ -17,7 +18,12 @@ import com.danielpl.spaceshootersample.util.Config.playerSpeed
 import com.danielpl.spaceshootersample.util.Jukebox
 import com.danielpl.spaceshootersample.util.SFX
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.channels.TickerMode
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.concurrent.schedule
+import kotlin.concurrent.scheduleAtFixedRate
 
 
 @AndroidEntryPoint
@@ -34,6 +40,8 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     private val paint = Paint()
     private var distanceTraveled = 0
     private var maxDistanceTraveled = 0
+    private var isBlinking = false
+    private var blinkingCounter = System.currentTimeMillis()
 
     init {
 
@@ -77,7 +85,9 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
             entity.update()
         }
         distanceTraveled += playerSpeed.toInt()
-        checkCollisions()
+        if(!isBlinking) {
+            checkCollisions()
+        }
         checkGameOver()
     }
 
@@ -100,6 +110,13 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
                 enemy.onCollision(player)
                 player.onCollision(enemy)
                 jukebox.play(SFX.crash)
+                isBlinking = true
+                blinkingCounter = System.currentTimeMillis()
+                // During the "delay" the player will not lose lives
+                Timer("isBlinking")
+                    .schedule(3000){
+                        isBlinking = false
+                }
             }
         }
     }
@@ -113,7 +130,16 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         for(entity in entities){
             entity.render(canvas, paint)
         }
-        player.render(canvas,paint)
+        if(!isBlinking) {
+            player.render(canvas, paint)
+        } else if(System.currentTimeMillis()-blinkingCounter<100){
+            player.render(canvas,paint)
+        } else{
+            Timer("resetBlinkingCounter")
+                .schedule(100){
+                    blinkingCounter = System.currentTimeMillis()
+                }
+        }
         renderHud(canvas,paint)
         holder.unlockCanvasAndPost(canvas)
     }
