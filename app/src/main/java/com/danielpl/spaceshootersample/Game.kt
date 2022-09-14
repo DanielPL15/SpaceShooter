@@ -104,7 +104,8 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     private fun render() {
         Log.d(R.string.game_tag.toString(), "render")
         val canvas = acquireAndLockCanvas() ?: return
-        canvas.drawColor(Color.BLUE)
+        canvas.drawColor(Color.BLACK)
+        //canvas.drawBitmap(loadBitmap(resources,R.drawable.startmenu,Config.STAGE_HEIGHT),0f,0f,paint)
         for(entity in entities){
             entity.render(canvas, paint)
         }

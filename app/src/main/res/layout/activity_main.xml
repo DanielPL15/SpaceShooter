@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="48dp"
-        android:backgroundTint="#457297"
+        android:backgroundTint="#3B8CAC"
         android:text="@string/start_game"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
