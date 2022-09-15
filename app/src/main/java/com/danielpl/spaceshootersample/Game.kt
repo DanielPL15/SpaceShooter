@@ -16,6 +16,7 @@ import com.danielpl.spaceshootersample.util.Config
 import com.danielpl.spaceshootersample.util.Config.isBoosting
 import com.danielpl.spaceshootersample.util.Config.playerSpeed
 import com.danielpl.spaceshootersample.util.Jukebox
+import com.danielpl.spaceshootersample.util.RenderHud
 import com.danielpl.spaceshootersample.util.SFX
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.TickerMode
@@ -125,6 +126,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     private fun render() {
         Log.d(R.string.game_tag.toString(), "render")
         val canvas = acquireAndLockCanvas() ?: return
+        val renderHud = RenderHud(canvas, paint, context)
         canvas.drawColor(Color.BLACK)
         //canvas.drawBitmap(loadBitmap(resources,R.drawable.startmenu,Config.STAGE_HEIGHT),0f,0f,paint)
         for(entity in entities){
@@ -132,7 +134,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         }
         if(!isBlinking) {
             player.render(canvas, paint)
-        } else if(System.currentTimeMillis()-blinkingCounter<100){
+        } else if(System.currentTimeMillis()-blinkingCounter<150){
             player.render(canvas,paint)
         } else{
             Timer("resetBlinkingCounter")
@@ -140,28 +142,16 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
                     blinkingCounter = System.currentTimeMillis()
                 }
         }
-        renderHud(canvas,paint)
+        if(!isGameOver){
+            renderHud.showHealthAndDistance(player.health, distanceTraveled)
+        } else{
+            renderHud.gameOver()
+        }
+        //renderHud(canvas,paint)
         holder.unlockCanvasAndPost(canvas)
     }
 
-    private fun renderHud(canvas: Canvas, paint: Paint) {
-        val textSize = 48f
-        val margin = 10f
-        paint.color = Color.WHITE
-        paint.textAlign = Paint.Align.LEFT
-        paint.textSize = textSize
 
-        if(!isGameOver){
-            canvas.drawText(context.getString(R.string.health_counter, player.health.toString()), margin,textSize,paint)
-            canvas.drawText(context.getString(R.string.distance_counter, distanceTraveled.toString()), margin,textSize*2,paint)
-        }else{
-            paint.textAlign = Paint.Align.CENTER
-            val centerX = Config.STAGE_WIDTH*0.5f
-            val centerY = Config.STAGE_HEIGHT*0.5f
-            canvas.drawText(context.getString(R.string.game_over), centerX,centerY,paint)
-            canvas.drawText(context.getString(R.string.restart), centerX,centerY+textSize,paint)
-        }
-    }
 
     private fun acquireAndLockCanvas() : Canvas?{
         if(holder?.surface?.isValid == false){
