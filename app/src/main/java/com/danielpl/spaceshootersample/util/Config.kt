@@ -23,6 +23,7 @@ object Config {
     const val BLINKING_PERIOD = 3000
     const val BLINKING_ACTIVE = 150
     const val BLINKING_INACTIVE = 100
+    const val DEFAULT_MUSIC_VOLUME = 0.6f
 
     val RNG = Random(uptimeMillis())
 

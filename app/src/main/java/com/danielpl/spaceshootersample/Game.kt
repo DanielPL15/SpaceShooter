@@ -35,7 +35,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     @Volatile
     private var isRunning = false
     private var isGameOver = false
-    private val jukebox = Jukebox(context.assets)
+    private val jukebox = Jukebox(context)
     private val player = Player(resources)
     private var entities = ArrayList<Entity>()
     private val paint = Paint()
@@ -65,6 +65,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         maxDistanceTraveled = preferences.getLongestDistance()
         isGameOver = false
         jukebox.play(SFX.starting)
+        jukebox.resumeBgMusic()
         //play sound effect
         //reset the score, maybe update the highScore table
 
@@ -95,6 +96,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     private fun checkGameOver() {
         if(player.health<1){
             if(!isGameOver){
+                jukebox.pauseBgMusic()
                 jukebox.play(SFX.death)
             }
             isGameOver = true
@@ -126,7 +128,6 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     private fun render() {
         Log.d(R.string.game_tag.toString(), "render")
         val canvas = acquireAndLockCanvas() ?: return
-        val renderHud = RenderHud(canvas, paint, context)
         canvas.drawColor(Color.BLACK)
         //canvas.drawBitmap(loadBitmap(resources,R.drawable.startmenu,Config.STAGE_HEIGHT),0f,0f,paint)
         for(entity in entities){
@@ -142,6 +143,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
                     blinkingCounter = System.currentTimeMillis()
                 }
         }
+        val renderHud = RenderHud(canvas, paint, context)
         if(!isGameOver){
             renderHud.showHealthAndDistance(player.health, distanceTraveled)
         } else{
@@ -162,6 +164,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     fun pause() {
         Log.d(R.string.game_tag.toString(), "pause")
         isRunning = false
+        jukebox.pauseBgMusic()
         try {
             gameThread.join()
         }
@@ -175,6 +178,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         gameThread = Thread(this)
         isRunning = true
         jukebox.play(SFX.starting)
+        jukebox.resumeBgMusic()
     }
 
     override fun surfaceCreated(p0: SurfaceHolder) {
