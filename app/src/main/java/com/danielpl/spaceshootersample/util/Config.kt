@@ -20,6 +20,9 @@ object Config {
     const val PLAYER_STARTING_POSITION = 10f
     const val ENEMY_HEIGHT = 60
     const val ENEMY_SPAWN_OFFSET = STAGE_WIDTH *2
+    const val BLINKING_PERIOD = 3000
+    const val BLINKING_ACTIVE = 150
+    const val BLINKING_INACTIVE = 100
 
     val RNG = Random(uptimeMillis())
 

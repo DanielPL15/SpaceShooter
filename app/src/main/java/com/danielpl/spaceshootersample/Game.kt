@@ -115,7 +115,7 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
                 blinkingCounter = System.currentTimeMillis()
                 // During the "delay" the player will not lose lives
                 Timer("isBlinking")
-                    .schedule(3000){
+                    .schedule(Config.BLINKING_PERIOD.toLong()){
                         isBlinking = false
                 }
             }
@@ -134,11 +134,11 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         }
         if(!isBlinking) {
             player.render(canvas, paint)
-        } else if(System.currentTimeMillis()-blinkingCounter<150){
+        } else if(System.currentTimeMillis()-blinkingCounter<Config.BLINKING_ACTIVE){
             player.render(canvas,paint)
         } else{
             Timer("resetBlinkingCounter")
-                .schedule(100){
+                .schedule(Config.BLINKING_INACTIVE.toLong()){
                     blinkingCounter = System.currentTimeMillis()
                 }
         }
@@ -147,7 +147,6 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         } else{
             renderHud.gameOver()
         }
-        //renderHud(canvas,paint)
         holder.unlockCanvasAndPost(canvas)
     }
 
