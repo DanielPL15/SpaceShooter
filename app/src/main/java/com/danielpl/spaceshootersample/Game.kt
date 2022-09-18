@@ -5,13 +5,14 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.os.CountDownTimer
 import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.danielpl.spaceshootersample.entity.*
 import com.danielpl.spaceshootersample.preferences.Preferences
+import com.danielpl.spaceshootersample.repository.HighScore
+import com.danielpl.spaceshootersample.repository.HighScoreRepository
 import com.danielpl.spaceshootersample.util.Config
 import com.danielpl.spaceshootersample.util.Config.isBoosting
 import com.danielpl.spaceshootersample.util.Config.playerSpeed
@@ -19,23 +20,22 @@ import com.danielpl.spaceshootersample.util.Jukebox
 import com.danielpl.spaceshootersample.util.RenderHud
 import com.danielpl.spaceshootersample.util.SFX
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.channels.TickerMode
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
-import kotlin.concurrent.scheduleAtFixedRate
 
 
 @AndroidEntryPoint
-class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Callback {
+class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Runnable, SurfaceHolder.Callback {
 
     @Inject lateinit var preferences: Preferences
+    @Inject lateinit var repository: HighScoreRepository
     private lateinit var gameThread: Thread
     @Volatile
     private var isRunning = false
     private var isGameOver = false
-    private val jukebox = Jukebox(context)
+    private val jukebox = Jukebox(gameActivityContext)
     private val player = Player(resources)
     private var entities = ArrayList<Entity>()
     private val paint = Paint()
@@ -101,7 +101,17 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
             }
             isGameOver = true
             if(distanceTraveled>maxDistanceTraveled){
-                preferences.saveLongestDistance(distanceTraveled)
+
+                // Old way of storing highScore: When just 1 score was needed
+                // preferences.saveLongestDistance(distanceTraveled)
+
+                // New way of storing highScore: With Local Room Database
+
+                repository.insertHighScore(HighScore(
+                    "Dani",
+                    distanceTraveled
+                ))
+
             }
         }
     }

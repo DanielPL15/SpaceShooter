@@ -8,7 +8,7 @@ object Config {
     const val STAGE_WIDTH = 1080
     const val STAGE_HEIGHT = 720
     const val STAR_COUNT = 40
-    const val ENEMY_COUNT = 10
+    const val ENEMY_COUNT = 5
     const val PLAYER_HEIGHT = 75
     const val ACCELERATION = 1.1f
     const val MIN_VEL = 0.1f

@@ -3,7 +3,10 @@ package com.danielpl.spaceshootersample.entity
 import android.content.res.Resources
 import com.danielpl.spaceshootersample.R
 import com.danielpl.spaceshootersample.util.Config
+import com.danielpl.spaceshootersample.util.Config.STAGE_HEIGHT
 import com.danielpl.spaceshootersample.util.Config.playerSpeed
+import java.lang.Math.sin
+import kotlin.math.roundToLong
 
 
 class Enemy(res: Resources): BitmapEntity() {
@@ -25,11 +28,13 @@ class Enemy(res: Resources): BitmapEntity() {
 
     override fun respawn(){
         x = (Config.STAGE_WIDTH + Config.RNG.nextInt(Config.ENEMY_SPAWN_OFFSET)).toFloat()
-        y = Config.RNG.nextInt(Config.STAGE_HEIGHT - Config.ENEMY_HEIGHT).toFloat()
+        //y = Config.RNG.nextInt(Config.STAGE_HEIGHT - Config.ENEMY_HEIGHT).toFloat()
+        y = kotlin.math.abs(kotlin.math.round(kotlin.math.sin(x/100)* STAGE_HEIGHT/2*0.90f))
     }
     override fun update() {
-        velX = -playerSpeed
+        velX = -playerSpeed/5
         x += velX
+        y = kotlin.math.abs(kotlin.math.round(kotlin.math.sin(x/250)* STAGE_HEIGHT*0.90f))
         if(right()<0){
            respawn()
         }
