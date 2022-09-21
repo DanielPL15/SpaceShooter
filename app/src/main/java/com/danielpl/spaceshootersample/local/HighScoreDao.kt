@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.Flow
 interface HighScoreDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertHighScore(highScoreEntity: HighScoreEntity)
+    suspend fun insertHighScore(highScoreEntity: HighScoreEntity)
 
     @Delete
-    fun deleteHighScore(highScoreEntity: HighScoreEntity)
+    suspend fun deleteHighScore(highScoreEntity: HighScoreEntity)
 
     @Query(
         """
@@ -20,5 +20,17 @@ interface HighScoreDao {
         """
     )
     fun getHighScores(): Flow<List<HighScoreEntity>>
+
+    @Query(
+        """
+            SELECT *
+            FROM highscoreentity
+            WHERE newScore = 
+             (SELECT MAX(newScore)
+             FROM highscoreentity
+            )
+        """
+    )
+    fun getLongestDistance(): Flow<HighScoreEntity>
 
 }

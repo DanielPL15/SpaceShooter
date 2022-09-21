@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.map
 class HighScoreImpl(
     private val dao: HighScoreDao
 ): HighScoreRepository{
-    override fun insertHighScore(highScore: HighScore) {
+    override suspend fun insertHighScore(highScore: HighScore) {
         dao.insertHighScore(highScore.toHighScoreEntity())
     }
 
-    override fun deleteHighScore(highScore: HighScore) {
+    override suspend fun deleteHighScore(highScore: HighScore) {
         dao.deleteHighScore(highScore.toHighScoreEntity())
     }
 
@@ -25,5 +25,11 @@ class HighScoreImpl(
                             it.toHighScore()
                             }
                         }
+    }
+
+    override fun getLongestDistance(): Flow<HighScore> {
+        return dao.getLongestDistance().map {
+            it.toHighScore()
+        }
     }
 }

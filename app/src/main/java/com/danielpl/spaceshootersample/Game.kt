@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.danielpl.spaceshootersample.entity.*
 import com.danielpl.spaceshootersample.preferences.Preferences
 import com.danielpl.spaceshootersample.repository.HighScore
@@ -20,6 +22,9 @@ import com.danielpl.spaceshootersample.util.Jukebox
 import com.danielpl.spaceshootersample.util.RenderHud
 import com.danielpl.spaceshootersample.util.SFX
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -62,7 +67,14 @@ class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Run
         }
         player.respawn()
         distanceTraveled = 0
-        maxDistanceTraveled = preferences.getLongestDistance()
+
+        //maxDistanceTraveled = preferences.getLongestDistance()
+
+        findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+            repository.getLongestDistance().collect {
+                maxDistanceTraveled = it.highScore
+            }
+        }
         isGameOver = false
         jukebox.play(SFX.starting)
         jukebox.resumeBgMusic()
@@ -98,19 +110,22 @@ class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Run
             if(!isGameOver){
                 jukebox.pauseBgMusic()
                 jukebox.play(SFX.death)
-            }
-            isGameOver = true
-            if(distanceTraveled>maxDistanceTraveled){
 
-                // Old way of storing highScore: When just 1 score was needed
-                // preferences.saveLongestDistance(distanceTraveled)
+                isGameOver = true
+                if(distanceTraveled>maxDistanceTraveled){
+                    maxDistanceTraveled = distanceTraveled
+                    // Old way of storing highScore: When just 1 score was needed
+                    // preferences.saveLongestDistance(distanceTraveled)
 
-                // New way of storing highScore: With Local Room Database
+                    // New way of storing highScore: With Local Room Database
 
-                repository.insertHighScore(HighScore(
-                    "Dani",
-                    distanceTraveled
-                ))
+                    findViewTreeLifecycleOwner()?.lifecycleScope?.launch(Dispatchers.IO) {
+                        repository.insertHighScore(HighScore(
+                            "Dani",
+                            distanceTraveled
+                        ))
+                    }
+                }
 
             }
         }

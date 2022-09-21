@@ -3,13 +3,18 @@ package com.danielpl.spaceshootersample
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import com.danielpl.spaceshootersample.preferences.Preferences
+import com.danielpl.spaceshootersample.repository.HighScore
 import com.danielpl.spaceshootersample.repository.HighScoreRepository
 import com.danielpl.spaceshootersample.util.Jukebox
 import com.danielpl.spaceshootersample.util.SFX
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,12 +36,21 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         val longestDistance = preferences.getLongestDistance()
         val highScore = findViewById<TextView>(R.id.highscore)
+        var highScoreValue = 0
 
         // Old way of getting highScore: When just 1 score was needed
         //highScore.text = getString(R.string.highScore, longestDistance.toString())
 
         // New way of getting highScore: With Local Room Database
-        repository.getHighScores().toString()
+        lifecycleScope.launch {
+            try {
+                 repository.getLongestDistance().collect {
+                     highScore.text = getString(R.string.highScore, it.highScore.toString())
+                }
+            } catch (error: Exception){
+                Log.d("Main Activity", error.toString())
+            }
+        }
 
     }
 }
