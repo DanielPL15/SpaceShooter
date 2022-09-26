@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.Log
 import com.danielpl.spaceshootersample.R
+import com.danielpl.spaceshootersample.util.MovementShapes
 
 abstract class Entity {
     var x = 0f
@@ -12,6 +13,9 @@ abstract class Entity {
     var height = 0f
     var velX = 0f
     var velY = 0f
+    var heightModifier = 0f
+    var velXModifier = 0.25f
+    var movementShape = MovementShapes.STRAIGHT
 
     init{
         Log.d(R.string.entity_tag.toString(), "Entity created")

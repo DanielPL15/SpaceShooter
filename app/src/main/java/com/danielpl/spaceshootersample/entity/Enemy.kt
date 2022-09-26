@@ -5,7 +5,10 @@ import com.danielpl.spaceshootersample.R
 import com.danielpl.spaceshootersample.util.Config
 import com.danielpl.spaceshootersample.util.Config.STAGE_HEIGHT
 import com.danielpl.spaceshootersample.util.Config.playerSpeed
+import com.danielpl.spaceshootersample.util.MovementShapes
+import java.lang.Math.round
 import java.lang.Math.sin
+import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 
@@ -27,16 +30,35 @@ class Enemy(res: Resources): BitmapEntity() {
     }
 
     override fun respawn(){
+
+        val shapeRandomizer = Config.RNG.nextInt(1,3)
+        if(shapeRandomizer==1){
+            movementShape = MovementShapes.SIN
+
+            heightModifier = Config.RNG.nextDouble(0.20,0.80).toFloat()
+            velXModifier = Config.RNG.nextDouble(0.5, 3.0).toFloat()
+        } else{
+            movementShape = MovementShapes.STRAIGHT
+        }
         x = (Config.STAGE_WIDTH + Config.RNG.nextInt(Config.ENEMY_SPAWN_OFFSET)).toFloat()
-        //y = Config.RNG.nextInt(Config.STAGE_HEIGHT - Config.ENEMY_HEIGHT).toFloat()
-        y = kotlin.math.abs(kotlin.math.round(kotlin.math.sin(x/100)* STAGE_HEIGHT/2*0.90f))
+        y = Config.RNG.nextInt(Config.STAGE_HEIGHT - Config.ENEMY_HEIGHT).toFloat()
+
     }
     override fun update() {
-        velX = -playerSpeed/5
-        x += velX
-        y = kotlin.math.abs(kotlin.math.round(kotlin.math.sin(x/250)* STAGE_HEIGHT*0.90f))
+        when(movementShape){
+            MovementShapes.SIN->{
+                velX = -playerSpeed/velXModifier
+                x += velX
+                val modifiedHeight = heightModifier* STAGE_HEIGHT/2
+                y = kotlin.math.round(kotlin.math.sin(x/250) * modifiedHeight + (STAGE_HEIGHT/2))
+            }
+            MovementShapes.STRAIGHT->{
+                velX = -playerSpeed
+                x += velX
+            }
+        }
         if(right()<0){
-           respawn()
+            respawn()
         }
     }
 
