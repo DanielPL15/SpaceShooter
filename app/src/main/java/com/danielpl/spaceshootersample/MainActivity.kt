@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.danielpl.spaceshootersample.preferences.Preferences
@@ -30,13 +31,21 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, GameActivity::class.java)
             startActivity(intent)
         }
+        findViewById<ImageButton>(R.id.settingsButton)?.setOnClickListener{
+            val intent = Intent(this, Settings::class.java)
+            startActivity(intent)
+        }
+        findViewById<Button>(R.id.highScoresButton)?.setOnClickListener {
+            val intent = Intent(this, ListOfRecords::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
         val longestDistance = preferences.getLongestDistance()
         val highScore = findViewById<TextView>(R.id.highscore)
-        var highScoreValue = 0
 
         // Old way of getting highScore: When just 1 score was needed
         //highScore.text = getString(R.string.highScore, longestDistance.toString())

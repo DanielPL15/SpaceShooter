@@ -13,4 +13,18 @@
     <string name="jukebox_tag">jukebox</string>
     <string name="star_tag">star</string>
     <string name="entity_tag">entity</string>
+    <string name="player_name">Player Name: </string>
+    <string name="player_name_example">Player 1</string>
+    <string name="save_button">Save</string>
+    <string name="credits_title">Credits</string>
+    <string name="highScores_button">See list of records</string>
+    <string name="credits_2">Music by Eric Matyas: www.soundimage.org</string>
+
+    <string name="Player">Player</string>
+    <string name="Km">Km</string>
+    <string name="InitialTextRecordPlayerRow">Nobody yet</string>
+    <string name="InitialTextRecordKmRow"> - </string>
+
+
+
 </resources>

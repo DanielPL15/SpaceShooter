@@ -27,8 +27,4 @@ class GameActivity: AppCompatActivity() {
         game.resume()
     }
 
-    fun onHighScorePopUp(){
-        setContentView(R.layout.activity_pop_up_window)
-    }
-
 }

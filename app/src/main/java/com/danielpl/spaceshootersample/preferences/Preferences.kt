@@ -6,7 +6,13 @@ interface Preferences {
 
     fun getLongestDistance(): Int
 
+    fun savePlayerName(playerName: String)
+
+    fun getPlayerName(): String?
+
     companion object {
         const val LONGEST_DIST = "longest_distance"
+        const val PLAYER_NAME = "player_name"
+
     }
 }

@@ -7,7 +7,7 @@ interface HighScoreRepository {
 
     suspend fun deleteHighScore(highScore: HighScore)
 
-    fun getHighScores(): Flow<List<HighScore>>
+    fun get4HighestScores(): Flow<List<HighScore>>
 
     fun getLongestDistance(): Flow<HighScore>
 }

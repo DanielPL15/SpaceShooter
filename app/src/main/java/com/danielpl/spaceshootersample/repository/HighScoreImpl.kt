@@ -18,8 +18,8 @@ class HighScoreImpl(
         dao.deleteHighScore(highScore.toHighScoreEntity())
     }
 
-    override fun getHighScores(): Flow<List<HighScore>> {
-        return dao.getHighScores()
+    override fun get4HighestScores(): Flow<List<HighScore>> {
+        return dao.get4HighestScores()
                 .map { entities->
                         entities.map {
                             it.toHighScore()

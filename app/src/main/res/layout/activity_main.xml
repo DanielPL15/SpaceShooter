@@ -8,10 +8,29 @@
     tools:context=".MainActivity">
 
     <Button
+        android:id="@+id/highScoresButton"
+        android:layout_width="198dp"
+        android:layout_height="48dp"
+        android:layout_margin="48dp"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="#7AA9CA"
+        android:text="@string/highScores_button"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/startGameButton"
+        app:layout_constraintHorizontal_bias="0.716"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/highscore"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
         android:id="@+id/startGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="48dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="36dp"
         android:backgroundTint="#3B8CAC"
         android:text="@string/start_game"
         android:textStyle="bold"
@@ -28,4 +47,20 @@
         app:layout_constraintBottom_toTopOf="@+id/startGameButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="72dp"
+        android:layout_height="48dp"
+        android:background="#00FFFFFF"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/startGameButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.109"
+        app:srcCompat="@drawable/settingsgear" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

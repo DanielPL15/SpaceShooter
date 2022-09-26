@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/listofrecords"
+    tools:context=".ListOfRecords">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="397dp"
+        android:layout_height="180dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.78"
+        android:textAlignment="center">
+
+        <TableLayout
+            android:id="@+id/tableRecordsPlayer"
+            android:layout_width="193dp"
+            android:layout_height="172dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TableRow
+                android:id="@+id/tableRecordsPlayerRow1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textRecordPlayerRow1"
+                    android:layout_width="186dp"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="10dp"
+                    android:text="@string/Player"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRecordsPlayerRow2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textRecordPlayerRow2"
+                    android:layout_width="199dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/InitialTextRecordPlayerRow"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRecordsPlayerRow3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textRecordPlayerRow3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/InitialTextRecordPlayerRow"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRecordsPlayerRow4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textRecordPlayerRow4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/InitialTextRecordPlayerRow"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRecordsPlayerRow5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textRecordPlayerRow5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/InitialTextRecordPlayerRow"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+            </TableRow>
+        </TableLayout>
+
+        <TableLayout
+            android:id="@+id/tableRecordsKm"
+            android:layout_width="195dp"
+            android:layout_height="171dp"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tableRecordsPlayer"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TableRow
+                android:id="@+id/tableRecordsKmRow1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textRecordKmRow1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="10dp"
+                    android:text="@string/Km"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRecordsKmRow2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textRecordKmRow2"
+                    android:layout_width="199dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/InitialTextRecordKmRow"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRecordsKmRow3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textRecordKmRow3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/InitialTextRecordKmRow"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRecordsKmRow4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textRecordKmRow4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/InitialTextRecordKmRow"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRecordsKmRow5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textRecordKmRow5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/InitialTextRecordKmRow"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+            </TableRow>
+        </TableLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

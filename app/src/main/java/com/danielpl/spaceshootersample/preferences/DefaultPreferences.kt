@@ -2,6 +2,7 @@ package com.danielpl.spaceshootersample.preferences
 
 import android.content.SharedPreferences
 import com.danielpl.spaceshootersample.preferences.Preferences.Companion.LONGEST_DIST
+import com.danielpl.spaceshootersample.preferences.Preferences.Companion.PLAYER_NAME
 
 class DefaultPreferences(
     private val sharedPref: SharedPreferences
@@ -14,5 +15,15 @@ class DefaultPreferences(
 
     override fun getLongestDistance(): Int {
         return sharedPref.getInt(LONGEST_DIST,0)
+    }
+
+    override fun savePlayerName(playerName: String) {
+        sharedPref.edit()
+            .putString(PLAYER_NAME, playerName)
+            .apply()
+    }
+
+    override fun getPlayerName(): String? {
+        return sharedPref.getString(PLAYER_NAME,"Player 1")
     }
 }

@@ -118,10 +118,9 @@ class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Run
                     // preferences.saveLongestDistance(distanceTraveled)
 
                     // New way of storing highScore: With Local Room Database
-
                     findViewTreeLifecycleOwner()?.lifecycleScope?.launch(Dispatchers.IO) {
                         repository.insertHighScore(HighScore(
-                            "Dani",
+                            preferences.getPlayerName().toString(),
                             distanceTraveled
                         ))
                     }

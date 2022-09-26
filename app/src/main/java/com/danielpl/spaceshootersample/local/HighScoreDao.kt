@@ -17,9 +17,11 @@ interface HighScoreDao {
         """
             SELECT *
             FROM highscoreentity
+            ORDER BY newScore DESC
+            LIMIT 4;
         """
     )
-    fun getHighScores(): Flow<List<HighScoreEntity>>
+    fun get4HighestScores(): Flow<List<HighScoreEntity>>
 
     @Query(
         """
@@ -28,7 +30,7 @@ interface HighScoreDao {
             WHERE newScore = 
              (SELECT MAX(newScore)
              FROM highscoreentity
-            )
+            );
         """
     )
     fun getLongestDistance(): Flow<HighScoreEntity>
