@@ -10,7 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class Settings: AppCompatActivity() {
+class Settings : AppCompatActivity() {
 
     @Inject
     lateinit var preferences: Preferences

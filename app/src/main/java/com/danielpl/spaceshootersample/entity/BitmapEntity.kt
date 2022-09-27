@@ -3,39 +3,41 @@ package com.danielpl.spaceshootersample.entity
 import android.content.res.Resources
 import android.graphics.*
 
-open class BitmapEntity: Entity() {
+open class BitmapEntity : Entity() {
     private lateinit var bitmap: Bitmap
 
-    fun setSprite(bmp: Bitmap){
+    fun setSprite(bmp: Bitmap) {
         bitmap = bmp
         width = bitmap.width.toFloat()
         height = bitmap.height.toFloat()
     }
+
     override fun render(canvas: Canvas, paint: Paint) {
-        canvas.drawBitmap(bitmap, x,y,paint)
+        canvas.drawBitmap(bitmap, x, y, paint)
     }
 }
 
-fun loadBitmap(res: Resources, id: Int, height: Int ):  Bitmap{
+fun loadBitmap(res: Resources, id: Int, height: Int): Bitmap {
     val bitmap = BitmapFactory.decodeResource(res, id)
     return scaleToTargetHeight(bitmap, height)
 }
 
-private val _matrix = Matrix()
+private val matrix = Matrix()
 fun flip(src: Bitmap, horizontally: Boolean): Bitmap {
-    _matrix.reset()
+    matrix.reset()
     val cx = src.width / 2
     val cy = src.height / 2
     if (horizontally) {
-        _matrix.postScale(1f, -1f, cx.toFloat(), cy.toFloat())
+        matrix.postScale(1f, -1f, cx.toFloat(), cy.toFloat())
     } else {
-        _matrix.postScale(-1f, 1f, cx.toFloat(), cy.toFloat())
+        matrix.postScale(-1f, 1f, cx.toFloat(), cy.toFloat())
     }
-    return Bitmap.createBitmap(src, 0, 0, src.width, src.height, _matrix, true)
+    return Bitmap.createBitmap(src, 0, 0, src.width, src.height, matrix, true)
 }
-fun flipVertically(src: Bitmap) = flip(src, false)
-fun flipHorizontally(src: Bitmap) = flip(src, true)
 
+fun flipVertically(src: Bitmap) = flip(src, false)
+// flipHorizontally is never used
+// fun flipHorizontally(src: Bitmap) = flip(src, true)
 
 
 fun scaleToTargetHeight(src: Bitmap, targetHeight: Int): Bitmap {

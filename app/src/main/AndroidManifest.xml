@@ -13,7 +13,7 @@
         <activity
             android:name=".ListOfRecords"
             android:exported="false"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

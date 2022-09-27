@@ -2,30 +2,30 @@ package com.danielpl.spaceshootersample.util
 
 import android.content.Context
 import android.content.res.AssetFileDescriptor
-import android.content.res.AssetManager
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.media.SoundPool
 import android.util.Log
-import com.danielpl.spaceshootersample.Game
 import com.danielpl.spaceshootersample.R
 import com.danielpl.spaceshootersample.util.Config.DEFAULT_MUSIC_VOLUME
 import java.io.IOException
 
-object SFX{
+object SFX {
     var crash = 0
     var starting = 1
     var death = 2
     var boost = 3
 }
+
 const val MAX_STREAMS = 3
-class Jukebox(private val engine: Context) {
+
+class Jukebox(engine: Context) {
     private val assetManager = engine.assets
     private val soundPool: SoundPool
     private var mBgPlayer: MediaPlayer? = null
-    private var mSoundEnabled = true //TODO: make prefs!
-    private var mMusicEnabled = true //TODO: make prefs!
 
+    //private var mSoundEnabled = true
+    private var mMusicEnabled = true
 
 
     init {
@@ -45,12 +45,15 @@ class Jukebox(private val engine: Context) {
         loadMusic()
     }
 
-    private fun loadSound(fileName: String): Int{
+    private fun loadSound(fileName: String): Int {
         try {
             val descriptor: AssetFileDescriptor = assetManager.openFd(fileName)
             return soundPool.load(descriptor, 1)
-        }catch(e: IOException){
-            Log.d(R.string.jukebox_tag.toString(), "Unable to load $fileName! Check the filename, and make sure it's in the assets-folder.")
+        } catch (e: IOException) {
+            Log.d(
+                R.string.jukebox_tag.toString(),
+                "Unable to load $fileName! Check the filename, and make sure it's in the assets-folder."
+            )
         }
         return 0
     }
@@ -66,10 +69,13 @@ class Jukebox(private val engine: Context) {
         }
     }
 
+    /*
+    Function is never used
     fun destroy() {
         soundPool.release()
         //the soundPool can no longer be used! you have to create a new soundPool.
     }
+     */
 
     private fun loadMusic() {
         try {
@@ -102,6 +108,8 @@ class Jukebox(private val engine: Context) {
         mBgPlayer!!.start()
     }
 
+    /*
+    Function is never used
     private fun unloadMusic() {
         if (mBgPlayer == null) {
             return
@@ -109,4 +117,5 @@ class Jukebox(private val engine: Context) {
         mBgPlayer!!.stop()
         mBgPlayer!!.release()
     }
+     */
 }

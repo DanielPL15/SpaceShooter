@@ -17,7 +17,7 @@ abstract class Entity {
     var velXModifier = 0.25f
     var movementShape = MovementShapes.STRAIGHT
 
-    init{
+    init {
         Log.d(R.string.entity_tag.toString(), "Entity created")
     }
 
@@ -37,15 +37,19 @@ abstract class Entity {
     fun setLeft(leftEdgePosition: Float) {
         x = leftEdgePosition
     }
+
     fun setRight(rightEdgePosition: Float) {
         x = rightEdgePosition - width
     }
+
     fun setTop(topEdgePosition: Float) {
         y = topEdgePosition
     }
+
     fun setBottom(bottomEdgePosition: Float) {
         y = bottomEdgePosition - height
     }
+
     fun setCenter(x: Float, y: Float) {
         this.x = x - width * 0.5f
         this.y = y - height * 0.5f

@@ -5,9 +5,9 @@ import androidx.room.RoomDatabase
 import com.danielpl.spaceshootersample.local.entity.HighScoreEntity
 
 @Database(
-    entities= [HighScoreEntity::class],
-    version=1
+    entities = [HighScoreEntity::class],
+    version = 1
 )
-abstract class HighScoreDatabase: RoomDatabase() {
+abstract class HighScoreDatabase : RoomDatabase() {
     abstract val dao: HighScoreDao
 }

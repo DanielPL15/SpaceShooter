@@ -9,29 +9,28 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.danielpl.spaceshootersample.preferences.Preferences
-import com.danielpl.spaceshootersample.repository.HighScore
 import com.danielpl.spaceshootersample.repository.HighScoreRepository
-import com.danielpl.spaceshootersample.util.Jukebox
-import com.danielpl.spaceshootersample.util.SFX
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    @Inject lateinit var preferences: Preferences
-    @Inject lateinit var repository: HighScoreRepository
+    @Inject
+    lateinit var preferences: Preferences
+
+    @Inject
+    lateinit var repository: HighScoreRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        findViewById<Button>(R.id.startGameButton)?.setOnClickListener{
+        findViewById<Button>(R.id.startGameButton)?.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
             startActivity(intent)
         }
-        findViewById<ImageButton>(R.id.settingsButton)?.setOnClickListener{
+        findViewById<ImageButton>(R.id.settingsButton)?.setOnClickListener {
             val intent = Intent(this, Settings::class.java)
             startActivity(intent)
         }
@@ -44,7 +43,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val longestDistance = preferences.getLongestDistance()
+        // Old way of getting longestDistance
+        // val longestDistance = preferences.getLongestDistance()
         val highScore = findViewById<TextView>(R.id.highscore)
 
         // Old way of getting highScore: When just 1 score was needed
@@ -53,10 +53,10 @@ class MainActivity : AppCompatActivity() {
         // New way of getting highScore: With Local Room Database
         lifecycleScope.launch {
             try {
-                 repository.getLongestDistance().collect {
-                     highScore.text = getString(R.string.highScore, it.highScore.toString())
+                repository.getLongestDistance().collect {
+                    highScore.text = getString(R.string.highScore, it.highScore.toString())
                 }
-            } catch (error: Exception){
+            } catch (error: Exception) {
                 Log.d("Main Activity", error.toString())
             }
         }

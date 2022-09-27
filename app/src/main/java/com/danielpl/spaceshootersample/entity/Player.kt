@@ -8,8 +8,9 @@ import com.danielpl.spaceshootersample.util.Config
 import com.danielpl.spaceshootersample.util.Config.isBoosting
 import com.danielpl.spaceshootersample.util.Config.playerSpeed
 
-class Player(res: Resources): BitmapEntity() {
+class Player(res: Resources) : BitmapEntity() {
     var health = 0
+
     init {
         setSprite(loadBitmap(res, R.drawable.player_ship, Config.PLAYER_HEIGHT))
         health = Config.PLAYER_STARTING_HEALTH
@@ -17,7 +18,7 @@ class Player(res: Resources): BitmapEntity() {
 
     override fun respawn() {
         health = Config.PLAYER_STARTING_HEALTH
-        x= (Config.PLAYER_STARTING_POSITION)
+        x = (Config.PLAYER_STARTING_POSITION)
     }
 
     override fun onCollision(that: Entity) {
@@ -26,9 +27,9 @@ class Player(res: Resources): BitmapEntity() {
     }
 
     override fun update() {
-        velX*= Config.DRAG
+        velX *= Config.DRAG
         velY += Config.GRAVITY
-        if(isBoosting){
+        if (isBoosting) {
             velX *= Config.ACCELERATION
             velY += Config.LIFT
         }
@@ -39,9 +40,9 @@ class Player(res: Resources): BitmapEntity() {
         y += velY
         playerSpeed = velX
 
-        if(bottom()> Config.STAGE_HEIGHT){
+        if (bottom() > Config.STAGE_HEIGHT) {
             setBottom(Config.STAGE_HEIGHT.toFloat())
-        } else if(top()<0f){
+        } else if (top() < 0f) {
             setTop(0f)
         }
 

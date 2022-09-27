@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class GameActivity: AppCompatActivity() {
+class GameActivity : AppCompatActivity() {
 
     private lateinit var game: Game
 

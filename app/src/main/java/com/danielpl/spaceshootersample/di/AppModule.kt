@@ -48,7 +48,7 @@ object AppModule {
     @Singleton
     fun provideTrackerRepository(
         db: HighScoreDatabase
-    ): HighScoreRepository{
+    ): HighScoreRepository {
         return HighScoreImpl(
             dao = db.dao
         )

@@ -23,7 +23,6 @@ import com.danielpl.spaceshootersample.util.RenderHud
 import com.danielpl.spaceshootersample.util.SFX
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -32,11 +31,16 @@ import kotlin.concurrent.schedule
 
 
 @AndroidEntryPoint
-class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Runnable, SurfaceHolder.Callback {
+class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Runnable,
+    SurfaceHolder.Callback {
 
-    @Inject lateinit var preferences: Preferences
-    @Inject lateinit var repository: HighScoreRepository
+    @Inject
+    lateinit var preferences: Preferences
+
+    @Inject
+    lateinit var repository: HighScoreRepository
     private lateinit var gameThread: Thread
+
     @Volatile
     private var isRunning = false
     private var isGameOver = false
@@ -53,16 +57,16 @@ class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Run
 
         holder.addCallback(this)
         holder.setFixedSize(Config.STAGE_WIDTH, Config.STAGE_HEIGHT)
-        for (i in 0 until Config.STAR_COUNT){
+        for (i in 0 until Config.STAR_COUNT) {
             entities.add(Star())
         }
-        for (i in 0 until Config.ENEMY_COUNT){
+        for (i in 0 until Config.ENEMY_COUNT) {
             entities.add(Enemy(resources))
         }
     }
 
     private fun restart() {
-        for(entity in entities){
+        for (entity in entities) {
             entity.respawn()
         }
         player.respawn()
@@ -85,7 +89,7 @@ class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Run
     }
 
     override fun run() {
-        while(isRunning){
+        while (isRunning) {
             // We cannot reuse a Thread object
             update()
             render()
@@ -95,34 +99,36 @@ class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Run
     private fun update() {
         Log.d(R.string.game_tag.toString(), "update")
         player.update()
-        for(entity in entities){
+        for (entity in entities) {
             entity.update()
         }
         distanceTraveled += playerSpeed.toInt()
-        if(!isBlinking) {
+        if (!isBlinking) {
             checkCollisions()
         }
         checkGameOver()
     }
 
     private fun checkGameOver() {
-        if(player.health<1){
-            if(!isGameOver){
+        if (player.health < 1) {
+            if (!isGameOver) {
                 jukebox.pauseBgMusic()
                 jukebox.play(SFX.death)
 
                 isGameOver = true
-                if(distanceTraveled>maxDistanceTraveled){
+                if (distanceTraveled > maxDistanceTraveled) {
                     maxDistanceTraveled = distanceTraveled
                     // Old way of storing highScore: When just 1 score was needed
                     // preferences.saveLongestDistance(distanceTraveled)
 
                     // New way of storing highScore: With Local Room Database
                     findViewTreeLifecycleOwner()?.lifecycleScope?.launch(Dispatchers.IO) {
-                        repository.insertHighScore(HighScore(
-                            preferences.getPlayerName().toString(),
-                            distanceTraveled
-                        ))
+                        repository.insertHighScore(
+                            HighScore(
+                                preferences.getPlayerName().toString(),
+                                distanceTraveled
+                            )
+                        )
                     }
                 }
 
@@ -131,9 +137,9 @@ class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Run
     }
 
     private fun checkCollisions() {
-        for(i in Config.STAR_COUNT until entities.size){
+        for (i in Config.STAR_COUNT until entities.size) {
             val enemy = entities[i]
-            if(isColliding(enemy,player)){
+            if (isColliding(enemy, player)) {
                 enemy.onCollision(player)
                 player.onCollision(enemy)
                 jukebox.play(SFX.crash)
@@ -141,9 +147,9 @@ class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Run
                 blinkingCounter = System.currentTimeMillis()
                 // During the "delay" the player will not lose lives
                 Timer("isBlinking")
-                    .schedule(Config.BLINKING_PERIOD.toLong()){
+                    .schedule(Config.BLINKING_PERIOD.toLong()) {
                         isBlinking = false
-                }
+                    }
             }
         }
     }
@@ -154,35 +160,34 @@ class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Run
         val canvas = acquireAndLockCanvas() ?: return
         canvas.drawColor(Color.BLACK)
         //canvas.drawBitmap(loadBitmap(resources,R.drawable.startmenu,Config.STAGE_HEIGHT),0f,0f,paint)
-        for(entity in entities){
+        for (entity in entities) {
             entity.render(canvas, paint)
         }
-        if(!isBlinking) {
+        if (!isBlinking) {
             player.render(canvas, paint)
-        } else if(System.currentTimeMillis()-blinkingCounter<Config.BLINKING_ACTIVE){
-            player.render(canvas,paint)
-        } else{
+        } else if (System.currentTimeMillis() - blinkingCounter < Config.BLINKING_ACTIVE) {
+            player.render(canvas, paint)
+        } else {
             Timer("resetBlinkingCounter")
-                .schedule(Config.BLINKING_INACTIVE.toLong()){
+                .schedule(Config.BLINKING_INACTIVE.toLong()) {
                     blinkingCounter = System.currentTimeMillis()
                 }
         }
         val renderHud = RenderHud(canvas, paint, context)
-        if(!isGameOver){
+        if (!isGameOver) {
             renderHud.showHealthAndDistance(player.health, distanceTraveled)
-        } else{
+        } else {
             renderHud.gameOver()
         }
         holder.unlockCanvasAndPost(canvas)
     }
 
 
-
-    private fun acquireAndLockCanvas() : Canvas?{
-        if(holder?.surface?.isValid == false){
+    private fun acquireAndLockCanvas(): Canvas? {
+        if (holder?.surface?.isValid == false) {
             return null
         }
-       return holder.lockCanvas()
+        return holder.lockCanvas()
     }
 
     fun pause() {
@@ -191,8 +196,7 @@ class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Run
         jukebox.pauseBgMusic()
         try {
             gameThread.join()
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             Log.d(R.string.game_tag.toString(), "Error while pausing: $e")
         }
     }
@@ -227,7 +231,7 @@ class Game(gameActivityContext: Context) : SurfaceView(gameActivityContext), Run
             }
             MotionEvent.ACTION_DOWN -> {
                 Log.d(R.string.game_tag.toString(), "isBoosting")
-                if(isGameOver){
+                if (isGameOver) {
                     restart()
                 } else {
                     jukebox.play(SFX.boost)

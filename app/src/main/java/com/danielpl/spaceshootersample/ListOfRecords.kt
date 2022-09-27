@@ -13,7 +13,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ListOfRecords : AppCompatActivity() {
 
-    @Inject lateinit var repository: HighScoreRepository
+    @Inject
+    lateinit var repository: HighScoreRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +47,7 @@ class ListOfRecords : AppCompatActivity() {
                     kmRecord4.text = it[3].highScore.toString()
 
                 }
-            } catch(error: Exception){
+            } catch (error: Exception) {
                 Log.d("List of Records", error.toString())
             }
         }

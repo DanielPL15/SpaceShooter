@@ -1,7 +1,6 @@
 package com.danielpl.spaceshootersample.repository
 
 import com.danielpl.spaceshootersample.local.HighScoreDao
-import com.danielpl.spaceshootersample.local.entity.HighScoreEntity
 import com.danielpl.spaceshootersample.local.entity.toHighScore
 import com.danielpl.spaceshootersample.local.entity.toHighScoreEntity
 import kotlinx.coroutines.flow.Flow
